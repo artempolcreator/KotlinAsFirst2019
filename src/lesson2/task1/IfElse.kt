@@ -3,6 +3,8 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -63,7 +65,13 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String {
+    if (age in 11..14) return "$age лет"
+    if (age % 10 == 1) return "$age год"
+    if (age % 10 in 2..4) return "$age года"
+    if (age % 10 in 5..9 || age % 10 == 0) return "$age лет"
+    return "Deadless"
+}
 
 /**
  * Простая
@@ -76,7 +84,16 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double = TODO()
+): Double {
+    val s = t1 * v1 + t2 * v2 + t3 * v3
+    val r = s / 2
+    if ((v1 * t1) >= r)
+        return r / v1
+    if ((v1 * t1) + (v2 * t2) >= r)
+        return ((r - (v1 * t1)) / v2) + t1
+    return ((r - ((v1 * t1) + (v2 * t2))) / v3) + t1 + t2
+
+}
 
 /**
  * Простая
@@ -91,7 +108,19 @@ fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
-): Int = TODO()
+): Int {
+    if ((rookX1 != kingX) && (rookY1 != kingY) && (rookX2 != kingX) && (rookY2 != kingY))
+        return (0)
+    if (((rookX1 == kingX) || (rookY1 == kingY)) && ((rookX2 == kingX) || (rookY2 == kingY)))
+        return (3)
+    else {
+        if ((rookX1 != kingX) && (rookY1 != kingY) && ((rookX2 == kingX) || (rookY2 == kingY)))
+            return (2)
+        if (((rookX1 == kingX) || (rookY1 == kingY)) && ((rookX2 != kingX) && (rookY2 != kingY)))
+            return (1)
+    }
+    return (25)
+}
 
 /**
  * Простая
@@ -107,7 +136,17 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int = TODO()
+): Int {
+    if ((kingX != rookX) && (kingY != rookY) && (abs(kingX - bishopX) != abs(kingY - bishopY)))
+        return (0)
+    if (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) != abs(kingY - bishopY)))
+        return (1)
+    if (((kingX != rookX) && (kingY != rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY)))
+        return (2)
+    if (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY)))
+        return (3)
+    return (25)
+}
 
 /**
  * Простая
@@ -117,7 +156,31 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    if (a + b < c || a + c < b || b + c < a)
+        return (-1)
+    if ((sqr(b) + sqr(a) == sqr(c)) || (sqr(c) + sqr(a) == sqr(b)) || (sqr(b) + sqr(c) == sqr(a)))
+        return (1)
+    if ((a > b) && (a > c)) {
+        if (((sqr(b) + sqr(c)) > sqr(a)))
+            return (0)
+        if (((sqr(b) + sqr(c)) < sqr(a)))
+            return (2)
+    }
+    if ((b >= a) && (b >= c)) {
+        if (((sqr(a) + sqr(c)) > sqr(b)))
+            return (0)
+        if (((sqr(a) + sqr(c)) < sqr(b)))
+            return (2)
+    }
+    if ((c >= b) && (c >= a)) {
+        if (((sqr(a) + sqr(b)) > sqr(c)))
+            return (0)
+        if (((sqr(a) + sqr(b)) < sqr(c)))
+            return (2)
+    }
+    return (25)
+}
 
 /**
  * Средняя
@@ -127,4 +190,17 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    if ((a > d) || (c > b))
+        return (-1)
+    if ((c >= a) && (d >= b))
+        return (b - c)
+    if ((a >= c) && (b >= d))
+        return (d - a)
+    if ((a >= c) && (d >= b))
+        return (b - a)
+    if ((c >= a) && (b >= d))
+        return (d - c)
+    return (999)
+
+}
