@@ -2,6 +2,7 @@
 
 package lesson1.task1
 
+import java.lang.Math.pow
 import kotlin.math.*
 
 /**
@@ -59,7 +60,7 @@ fun main() {
  * Пользователь задает время в часах, минутах и секундах, например, 8:20:35.
  * Рассчитать время в секундах, прошедшее с начала суток (30035 в данном случае).
  */
-fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours * 60 * 60 + minutes * 60 + seconds
+fun seconds(hours: Int, minutes: Int, seconds: Int): Int = 60 * (hours * 60 + minutes) + seconds
 
 /**
  * Тривиальная
@@ -113,8 +114,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double =
-    (initial * (1 + 0.01 * percent)) *  (1 + 0.01 * percent) * (1 + 0.01 * percent)
-
+    initial * ((1 + 0.01 * percent).pow(3))
 /**
  * Простая
  *

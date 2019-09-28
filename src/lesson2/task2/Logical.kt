@@ -41,15 +41,15 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int {
-    if ((month == 1) || (month == 3) || (month == 5) || (month == 7) || (month == 8) || (month == 10) || (month == 12))
-        return (31)
-    if ((month == 4) || (month == 6) || (month == 9) || (month == 11))
-        return (30)
+    when (month) {
+        1, 3, 5, 7, 8, 10, 12 -> return 31
+        4, 6, 9, 11 -> return 30
+    }
     if (((year % 4) == 0) && (month == 2) && (year % 100 != 0))
-        return (29)
+        return 29
     if (((year % 4) == 0) && (month == 2) && (year % 400 == 0))
-        return (29)
-    return (28)
+        return 29
+    return 28
 
 }
 
@@ -76,11 +76,11 @@ fun circleInside(
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     if (((r >= a) && (s >= b)) || ((r >= b) && (s >= a)))
-        return(true)
+        return true
     if (((r >= b) && (s >= c)) || ((r >= c) && (s >= b)))
-        return(true)
+        return true
     if (((r >= a) && (s >= c)) || ((r >= c) && (s >= a)))
-        return(true)
-    return (false)
+        return true
+    return false
 
 }
