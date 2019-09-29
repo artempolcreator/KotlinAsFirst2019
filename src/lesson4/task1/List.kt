@@ -492,7 +492,7 @@ fun russian(n: Int): String {
         6 -> list.add("шестьдесят")
         7 -> list.add("семьдесят")
         8 -> list.add("восемьдесят")
-        9 -> list.add("девяноста")
+        9 -> list.add("девяносто")
     }
     when (n % 10) {
         1 -> list.add("один")
