@@ -441,7 +441,7 @@ fun russian(n: Int): String {
             6 -> list.add("шестьдесят")
             7 -> list.add("семьдесят")
             8 -> list.add("восемьдесят")
-            9 -> list.add("девяноста")
+            9 -> list.add("девяносто")
         }
         if (n / 1000 != 0) {
             when (n % 10000 / 1000) {
