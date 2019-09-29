@@ -437,7 +437,7 @@ fun russian(n: Int): String {
             2 -> list.add("двадцать")
             3 -> list.add("тридцать")
             4 -> list.add("сорок")
-            5 -> list.add("пятдесят")
+            5 -> list.add("пятьдесят")
             6 -> list.add("шестьдесят")
             7 -> list.add("семьдесят")
             8 -> list.add("восемьдесят")
