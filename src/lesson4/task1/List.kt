@@ -482,7 +482,7 @@ fun russian(n: Int): String {
             18 -> list.add("восемнадцать")
             19 -> list.add("девятнадцать")
         }
-        return list.joinToString()
+        return list.joinToString(separator = " ")
     }
     when (n % 100 / 10) {
         2 -> list.add("двадцать")
