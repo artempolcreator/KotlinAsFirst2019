@@ -66,14 +66,14 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    if (age % 100 in 11..14) return "$age лет"
-    when (age % 10) {
+    if (age % 100 in 11..14) {
+        return "$age лет"
+    } else when (age % 10) {
         1 -> return "$age год"
         in 2..4 -> return "$age года"
         in 5..9 -> return "$age лет"
-        0 -> return "$age лет"
+        else -> return "$age лет"
     }
-    return "zero"
 }
 
 
@@ -117,13 +117,9 @@ fun whichRookThreatens(
         return 0
     if (((rookX1 == kingX) || (rookY1 == kingY)) && ((rookX2 == kingX) || (rookY2 == kingY)))
         return 3
-    else {
-        if ((rookX1 != kingX) && (rookY1 != kingY) && ((rookX2 == kingX) || (rookY2 == kingY)))
-            return 2
-        if (((rookX1 == kingX) || (rookY1 == kingY)) && ((rookX2 != kingX) && (rookY2 != kingY)))
-            return 1
-    }
-    return 25
+    return if ((rookX1 != kingX) && (rookY1 != kingY) && ((rookX2 == kingX) || (rookY2 == kingY)))
+        2
+    else 1
 }
 
 /**
@@ -145,11 +141,9 @@ fun rookOrBishopThreatens(
         return 0
     if (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) != abs(kingY - bishopY)))
         return 1
-    if (((kingX != rookX) && (kingY != rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY)))
-        return 2
-    if (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY)))
-        return 3
-    return 25
+    return if (((kingX != rookX) && (kingY != rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY)))
+        2
+    else 3
 }
 
 /**
@@ -204,10 +198,9 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
         return b - c
     if ((a >= c) && (b >= d))
         return d - a
-    if ((a >= c) && (d >= b))
-        return b - a
-    if ((c >= a) && (b >= d))
-        return d - c
-    return 999
+    return if ((a >= c) && (d >= b))
+        b - a
+    else
+        d - c
 
 }
