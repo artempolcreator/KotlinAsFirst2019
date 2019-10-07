@@ -66,13 +66,13 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    if (age % 100 in 11..14) {
-        return "$age лет"
+    return if (age % 100 in 11..14) {
+        "$age лет"
     } else when (age % 10) {
-        1 -> return "$age год"
-        in 2..4 -> return "$age года"
-        in 5..9 -> return "$age лет"
-        else -> return "$age лет"
+        1 -> "$age год"
+        in 2..4 -> "$age года"
+        in 5..9 -> "$age лет"
+        else -> "$age лет"
     }
 }
 
@@ -112,15 +112,13 @@ fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
-): Int {
-    if ((rookX1 != kingX) && (rookY1 != kingY) && (rookX2 != kingX) && (rookY2 != kingY))
-        return 0
-    if (((rookX1 == kingX) || (rookY1 == kingY)) && ((rookX2 == kingX) || (rookY2 == kingY)))
-        return 3
-    return if ((rookX1 != kingX) && (rookY1 != kingY) && ((rookX2 == kingX) || (rookY2 == kingY)))
-        2
-    else 1
-}
+): Int =
+    when {
+        (rookX1 != kingX) && (rookY1 != kingY) && (rookX2 != kingX) && (rookY2 != kingY) -> 0
+        ((rookX1 == kingX) || (rookY1 == kingY)) && ((rookX2 == kingX) || (rookY2 == kingY)) -> 3
+        (rookX1 != kingX) && (rookY1 != kingY) && ((rookX2 == kingX) || (rookY2 == kingY)) -> 2
+        else -> 1
+    }
 
 /**
  * Простая
@@ -136,15 +134,13 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int {
-    if ((kingX != rookX) && (kingY != rookY) && (abs(kingX - bishopX) != abs(kingY - bishopY)))
-        return 0
-    if (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) != abs(kingY - bishopY)))
-        return 1
-    return if (((kingX != rookX) && (kingY != rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY)))
-        2
-    else 3
-}
+): Int =
+    when {
+        ((kingX != rookX) && (kingY != rookY) && (abs(kingX - bishopX) != abs(kingY - bishopY))) -> 0
+        (((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) != abs(kingY - bishopY))) -> 1
+        (((kingX != rookX) && (kingY != rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY))) -> 2
+        else -> 3
+    }
 
 /**
  * Простая
@@ -157,30 +153,23 @@ fun rookOrBishopThreatens(
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     if (a + b < c || a + c < b || b + c < a)
         return -1
-    var a2 = sqr(a)
-    var b2 = sqr(b)
-    var c2 = sqr(c)
+    val a2 = sqr(a)
+    val b2 = sqr(b)
+    val c2 = sqr(c)
     if ((b2 + a2 == c2) || (c2 + a2 == b2) || (b2 + c2 == a2))
         return 1
-    if ((a > b) && (a > c)) {
-        if ((b2 + c2) > a2)
-            return 0
-        if ((b2 + c2) < a2)
-            return 2
+    when ((a >= b) && (a >= c)) {
+        ((b2 + c2) > a2) -> return 0
+        ((b2 + c2) < a2) -> return 2
     }
-    if ((b >= a) && (b >= c)) {
-        if ((a2 + c2) > b2)
-            return 0
-        if ((a2 + c2) < b2)
-            return 2
+    when ((b >= a) && (b >= c)) {
+        ((a2 + c2) > b2) -> return 0
+        ((a2 + c2) < b2) -> return 2
     }
-    if ((c >= b) && (c >= a)) {
-        if ((a2 + b2) > c2)
-            return 0
-        if ((a2 + b2) < c2)
-            return 2
+    return when ((c >= b) && (c >= a)) {
+        ((a2 + b2) > c2) -> 0
+        else -> 2
     }
-    return 25
 }
 
 /**
@@ -192,15 +181,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if ((a > d) || (c > b))
-        return -1
-    if ((c >= a) && (d >= b))
-        return b - c
-    if ((a >= c) && (b >= d))
-        return d - a
-    return if ((a >= c) && (d >= b))
-        b - a
-    else
-        d - c
+    return when {
+        a > d || c > b -> -1
+        (c >= a) && (d >= b) -> b - c
+        (a >= c) && (b >= d) -> d - a
+        (a >= c) && (d >= b) -> b - a
+        else -> d - c
+    }
 
 }

@@ -149,11 +149,7 @@ fun mean(list: List<Double>): Double {
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
     if (list.isEmpty()) return list
-    var sum = 0.0
-    for (i in 0 until list.size)
-        sum += list[i]
-    var mid = 0.0
-    mid = sum / list.size
+    val mid = mean(list)
     for (i in 0 until list.size)
         list[i] = list[i] - mid
     return list
