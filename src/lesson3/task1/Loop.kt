@@ -134,20 +134,23 @@ fun lcm(m: Int, n: Int): Int {
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = n / minDivisor(n)
+fun minDivisor(n: Int): Int {
+    var k = 3
+    when {
+        isPrime(n) -> return n
+        n % 2 == 0 -> return 2
+        else -> while (n % k != 0)
+            k += 2
+    }
+    return k
+}
+
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var max = 1
-    for (i in 2 until n) {
-        if (n % i == 0)
-            max = i
-    }
-    return max
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -305,20 +308,13 @@ fun squareSequenceDigit(n: Int): Int {
     while (length < n) {
         k = sqr(c)
         m = k
-        while (k > 0) {
-            count++
-            k /= 10
-        }
+        count = digitNumber(k)
         c++
         length += count
         count = 0
     }
     length -= n
-    for (i in 1..length) {
-        m /= 10
-    }
-    return (m % 10)
-
+    return placeNumber(m, length)
 }
 
 /**
@@ -344,20 +340,18 @@ fun fibSequenceDigit(n: Int): Int {
         n1 = n2
         n2 = k
         m = k
-        while (k > 0) {
-            count++
-            k /= 10
-        }
+        count = digitNumber(k)
         length += count
         count = 0
     }
     length -= n
-    if (length >= 1) {
-        for (i in 1..length) {
-            m /= 10
-        }
-    }
-    return (m % 10)
-
+    return placeNumber(m, length)
 }
 
+fun placeNumber(m: Int, length: Int): Int {
+    var n = m
+    for (i in 1..length) {
+        n /= 10
+    }
+    return (n % 10)
+}
