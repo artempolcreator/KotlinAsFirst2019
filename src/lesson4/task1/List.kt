@@ -131,12 +131,8 @@ fun abs(v: List<Double>): Double {
  */
 fun mean(list: List<Double>): Double {
     if (list.isEmpty()) return 0.0
-    var sum = 0.0
-    for (i in 0 until list.size)
-        sum += list[i]
-    var mid = 0.0
-    mid = sum / list.size
-    return mid
+    val sum = list.sum()
+    return sum / list.size
 }
 
 /**
@@ -166,13 +162,8 @@ fun center(list: MutableList<Double>): MutableList<Double> {
 fun times(a: List<Int>, b: List<Int>): Int {
     var product = 0
     if (a.isEmpty() || b.isEmpty()) return 0
-    if (a.size >= b.size) {
-        for (i in 0 until b.size)
-            product += a[i] * b[i]
-    } else {
-        for (i in 0 until a.size)
-            product += a[i] * b[i]
-    }
+    for (i in 0 until b.size)
+        product += a[i] * b[i]
     return product
 }
 
@@ -230,7 +221,7 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    var list = mutableListOf<Int>()
+    val list = mutableListOf<Int>()
     var n1 = n
     var m = 2
     while (n1 > 1) {
@@ -251,7 +242,7 @@ fun factorize(n: Int): List<Int> {
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
 fun factorizeToString(n: Int): String {
-    var list = mutableListOf<Int>()
+    val list = mutableListOf<Int>()
     var n1 = n
     var m = 2
     while (n1 > 1) {
@@ -275,7 +266,7 @@ fun factorizeToString(n: Int): String {
  */
 fun convert(n: Int, base: Int): List<Int> {
     var n1 = n
-    var list = mutableListOf<Int>()
+    val list = mutableListOf<Int>()
     while (n1 >= base) {
         list.add(n1 % base)
         n1 /= base
@@ -403,7 +394,7 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    var list = mutableListOf<String>()
+    val list = mutableListOf<String>()
     when (n / 100000) {
         1 -> list.add("сто")
         2 -> list.add("двести")
