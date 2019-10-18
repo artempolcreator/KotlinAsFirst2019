@@ -132,7 +132,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
             listOfKey.add(key)
             listOfValue.add(value)
         }
-        for (i in 0 until maxOf(listOfKey.size, listOfValue.size))
+        for (i in 0 until listOfKey.size)
             if ((!a.containsKey(listOfKey[i])) || (!a.containsValue(listOfValue[i])))
                 return false
     } else {
@@ -140,7 +140,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
             listOfKey.add(key)
             listOfValue.add(value)
         }
-        for (i in 0 until maxOf(listOfKey.size, listOfValue.size))
+        for (i in 0 until listOfKey.size)
             if ((!b.containsKey(listOfKey[i])) || (!b.containsValue(listOfValue[i])))
                 return false
     }
@@ -252,11 +252,10 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
             count[first] = count[first]!! + 1
     }
     for ((first, second) in stockPrices) {
-        if (!res.containsKey(first)) {
+        if (!res.containsKey(first))
             res[first] = second
-        } else {
+        else
             res[first] = res[first]!! + (second)
-        }
     }
     for ((food, cost) in res)
         res[food] = res[food]!! / count[food]!!
