@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import lesson2.task1.triangleKind
+
 /**
  * Пример
  *
@@ -277,7 +279,19 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    val res = mutableMapOf<String, Pair<Double, String>>() // Создал Мар (Печенье to (20.00 to Мария))
+    for ((name, value) in stuff) {
+        if (!res.containsKey(value.first))
+            res[value.first] = value.second to name
+        else
+            if (res[value.first]!!.first > value.second)
+                res[value.first] = value.second to name
+    }
+    return if (res.containsKey(kind))
+        res[kind]!!.second
+    else null
+}
 
 /**
  * Средняя
