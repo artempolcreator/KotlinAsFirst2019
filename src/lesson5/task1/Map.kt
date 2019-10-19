@@ -374,8 +374,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
         if (!res.containsKey(name))
             res[name] = mutableSetOf()
     }
-    return res
-
+    return res ?: friends
 }
 
 /**
