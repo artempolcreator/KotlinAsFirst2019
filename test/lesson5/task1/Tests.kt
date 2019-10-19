@@ -267,6 +267,20 @@ class Tests {
     fun propagateHandshakes() {
         assertEquals(
             mapOf(
+                "Marat 3" to setOf("Mikhail 2", "Sveta 1", "Pasha 0"),
+                "Mikhail 2" to setOf("Pasha 0"),
+                "Sveta 1" to setOf(),
+                "Pasha 0" to setOf()
+            ),
+            propagateHandshakes(
+                mapOf(
+                    "Marat 3" to setOf("Mikhail 2", "Sveta 1"),
+                    "Mikhail 2" to setOf("Pasha 0")
+                )
+            )
+        )
+        assertEquals(
+            mapOf(
                 "Marat" to setOf("Mikhail", "Sveta"),
                 "Sveta" to setOf("Mikhail"),
                 "Mikhail" to setOf()
