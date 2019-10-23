@@ -386,12 +386,12 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
                 res[names] = mutableSetOf()
             }
         }
-        if ((res.isNotEmpty()) && (res[name]!!.contains(name)))
-            res[name]!!.remove(name)
     }
     for ((name, companion) in friends) {
         if (!res.containsKey(name))
             res[name] = mutableSetOf()
+        if ((res.isNotEmpty()) && (res[name]!!.contains(name)))
+            res[name]!!.remove(name)
     }
     return res
 }
