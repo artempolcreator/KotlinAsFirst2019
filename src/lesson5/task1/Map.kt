@@ -335,7 +335,17 @@ fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean {
+    for (i in 0 until words.size - 1) {
+        for (j in (i + 1) until words.size) {
+
+            return true
+        }
+
+
+    }
+    return true
+}
 
 
 /**
@@ -376,14 +386,14 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
                 res[names] = mutableSetOf()
             }
         }
+        if ((res.isNotEmpty()) && (res[name]!!.contains(name)))
+            res[name]!!.remove(name)
     }
     for ((name, companion) in friends) {
         if (!res.containsKey(name))
             res[name] = mutableSetOf()
     }
-    return if (res != null)
-        res
-    else friends
+    return res
 }
 
 /**
