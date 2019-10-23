@@ -4,6 +4,8 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import java.lang.Math.pow
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -177,15 +179,10 @@ fun times(a: List<Int>, b: List<Int>): Int {
  */
 fun polynom(p: List<Int>, x: Int): Int {
     if (p.isEmpty()) return 0
-    var sum = 0
-    var iks = 1
+    var sum = p[0]
     for (i in 1 until p.size) {
-        for (k in 1..i)
-            iks *= x
-        sum += p[i] * iks
-        iks = 1
+        sum += p[i] * x.toDouble().pow(i).toInt()
     }
-    sum += p[0]
     return (sum)
 }
 
@@ -329,7 +326,7 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var res: String = ""
+    var res = ""
     var n1 = n
     while (n1 / 1000 > 0) {
         res += "M"

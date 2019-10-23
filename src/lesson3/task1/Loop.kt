@@ -107,26 +107,14 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var r: Int
-    if (m >= n) {
-        r = n
-        for (i in r downTo 1) {
-            if ((m % i == 0) && (n % i == 0)) {
-                r = i
-                break
-            }
-        }
-    } else {
-        r = m
-        for (i in r downTo 1) {
-            if ((m % i == 0) && (n % i == 0)) {
-                r = i
-                break
-            }
+    var r = minOf(m, n)
+    for (i in r downTo 1) {
+        if ((m % i == 0) && (n % i == 0)) {
+            r = i
+            break
         }
     }
     return (m * n / r)
-
 }
 
 /**
@@ -160,16 +148,10 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    if (m >= n) {
-        for (i in 2..n) {
-            if ((m % i == 0) && (n % i == 0))
-                return false
-        }
-    } else {
-        for (i in 2..m) {
-            if ((m % i == 0) && (n % i == 0))
-                return false
-        }
+    val r = maxOf(m, n)
+    for (i in 2..r) {
+        if ((m % i == 0) && (n % i == 0))
+            return false
     }
     return true
 }
@@ -182,19 +164,12 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    if (m >= n) {
-        for (i in n..m) {
-            val r: Double = sqrt(i * 1.0)
-            if (r % 1 == 0.0)
-                return true
-
-        }
-    } else {
-        for (i in m..n) {
-            val r: Double = sqrt(i * 1.0)
-            if (r % 1 == 0.0)
-                return true
-        }
+    val max = maxOf(m, n)
+    val min = minOf(m, n)
+    for (i in min..max) {
+        val r: Double = sqrt(i * 1.0)
+        if (r % 1 == 0.0)
+            return true
     }
     return false
 }
