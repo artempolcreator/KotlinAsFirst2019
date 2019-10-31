@@ -4,6 +4,8 @@ package lesson3.task1
 
 import lesson1.task1.sqr
 import javax.swing.text.html.HTML.Attribute.N
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.sqrt
 
 /**
@@ -147,14 +149,7 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    val r = maxOf(m, n)
-    for (i in 2..r) {
-        if ((m % i == 0) && (n % i == 0))
-            return false
-    }
-    return true
-}
+fun isCoPrime(m: Int, n: Int): Boolean = (m * n) / lcm(m, n) == 1
 
 /**
  * Простая
@@ -163,16 +158,9 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean {
-    val max = maxOf(m, n)
-    val min = minOf(m, n)
-    for (i in min..max) {
-        val r: Double = sqrt(i * 1.0)
-        if (r % 1 == 0.0)
-            return true
-    }
-    return false
-}
+fun squareBetweenExists(m: Int, n: Int): Boolean =
+    ceil(sqrt(m.toDouble())) <= floor(sqrt(n.toDouble()))
+
 
 /**
  * Средняя

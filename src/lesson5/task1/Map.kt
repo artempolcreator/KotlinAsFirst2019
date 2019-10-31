@@ -303,7 +303,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    word.toList()
+    word.toLowerCase().toList()
     for (i in word) {
         if (!chars.contains(i))
             return false
@@ -324,7 +324,21 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val imp = mutableMapOf<String, Int>()
+    val res = mutableMapOf<String, Int>()
+    if (list.isEmpty()) return mapOf<String, Int>()
+    for (char in list) {
+        if (!imp.containsKey(char))
+            imp[char] = 1
+        else imp[char] = imp[char]!! + 1
+    }
+    for ((name, value) in imp) {
+        if (imp[name] != 1)
+            res[name] = value
+    }
+    return res
+}
 
 /**
  * Средняя
@@ -335,18 +349,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean {
-    for (i in 0 until words.size - 1) {
-        for (j in (i + 1) until words.size) {
-
-            return true
-        }
-
-
-    }
-    return true
-}
-
+fun hasAnagrams(words: List<String>): Boolean = TODO()
 
 /**
  * Сложная

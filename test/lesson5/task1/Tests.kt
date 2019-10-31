@@ -242,15 +242,15 @@ class Tests {
     fun extractRepeats() {
         assertEquals(
             emptyMap<String, Int>(),
+            extractRepeats(listOf("a", "b", "c"))
+        )
+        assertEquals(
+            emptyMap<String, Int>(),
             extractRepeats(emptyList())
         )
         assertEquals(
             mapOf("a" to 2),
             extractRepeats(listOf("a", "b", "a"))
-        )
-        assertEquals(
-            emptyMap<String, Int>(),
-            extractRepeats(listOf("a", "b", "c"))
         )
     }
 
@@ -265,6 +265,21 @@ class Tests {
     @Test
     @Tag("Hard")
     fun propagateHandshakes() {
+        assertEquals(
+            mapOf(
+                "Pasha 0" to setOf("Marat 1", "Nikita 1а6"),
+                "Marat 1" to setOf("Nikita 1а6"),
+                "Nikita 1а6" to setOf(),
+                "Mikhail 2" to setOf("Pasha 0", "Marat 1", "Nikita 1а6")
+            ),
+            propagateHandshakes(
+                mapOf(
+                    "Pasha 0" to setOf("Marat 1"),
+                    "Marat 1" to setOf("Nikita 1а6"),
+                    "Mikhail 2" to setOf("Pasha 0")
+                )
+            )
+        )
         assertEquals(
             mapOf(
                 "Marat 1" to setOf("Pasha 0"),

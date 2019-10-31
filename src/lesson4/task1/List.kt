@@ -121,8 +121,8 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
 fun abs(v: List<Double>): Double {
     var abs = 0.0
     if (v.isEmpty()) return 0.0
-    for (i in 0 until v.size)
-        abs += sqr(v[i])
+    for (element in v)
+        abs += sqr(element)
     return sqrt(abs)
 }
 
@@ -164,7 +164,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
 fun times(a: List<Int>, b: List<Int>): Int {
     var product = 0
     if (a.isEmpty() || b.isEmpty()) return 0
-    for (i in 0 until b.size)
+    for (i in b.indices)
         product += a[i] * b[i]
     return product
 }
@@ -179,8 +179,8 @@ fun times(a: List<Int>, b: List<Int>): Int {
  */
 fun polynom(p: List<Int>, x: Int): Int {
     if (p.isEmpty()) return 0
-    var sum = p[0]
-    for (i in 1 until p.size) {
+    var sum = 0
+    for (i in p.indices) {
         sum += p[i] * x.toDouble().pow(i).toInt()
     }
     return (sum)
@@ -199,15 +199,11 @@ fun polynom(p: List<Int>, x: Int): Int {
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
     if (list.isEmpty()) return mutableListOf()
     var sum = 0
-    for (i in list.size - 1 downTo 1) {
-        for (k in 0..i)
-            sum += list[k]
+    for (i in 0 until list.size) {
+        sum += list[i]
         list[i] = sum
-        sum = 0
     }
     return list
-
-
 }
 
 /**
@@ -220,13 +216,17 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
 fun factorize(n: Int): List<Int> {
     val list = mutableListOf<Int>()
     var n1 = n
-    var m = 2
+    var m = 3
+    while (n1 % 2 == 0) {
+        list.add(2)
+        n1 /= 2
+    }
     while (n1 > 1) {
-        while (n1 % m != 0)
-            m += 1
-        list.add(m)
-        n1 /= m
-        m = 2
+        while (n1 % m == 0) {
+            list.add(m)
+            n1 /= m
+        }
+        m += 2
     }
     return list
 }
@@ -238,21 +238,7 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String {
-    val list = mutableListOf<Int>()
-    var n1 = n
-    var m = 2
-    while (n1 > 1) {
-        while (n1 % m != 0)
-            m += 1
-        list.add(m)
-        n1 /= m
-        m = 2
-    }
-    return list.joinToString(separator = "*")
-
-
-}
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -326,62 +312,19 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var res = ""
+    val res = mutableListOf<String>()
     var n1 = n
-    while (n1 / 1000 > 0) {
-        res += "M"
-        n1 -= 1000
+    val arab = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val rim = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    for (i in arab.indices) {
+        while (n1 >= arab[i]) {
+            n1 -= arab[i]
+            res.add(rim[i])
+        }
     }
-    while (n1 / 900 > 0) {
-        res += "CM"
-        n1 -= 900
-    }
-    while (n1 / 500 > 0) {
-        res += "D"
-        n1 -= 500
-    }
-    while (n1 / 400 > 0) {
-        res += "CD"
-        n1 -= 400
-    }
-    while (n1 / 100 > 0) {
-        res += "C"
-        n1 -= 100
-    }
-    while (n1 / 90 > 0) {
-        res += "XC"
-        n1 -= 90
-    }
-    while (n1 / 50 > 0) {
-        res += "L"
-        n1 -= 50
-    }
-    while (n1 / 40 > 0) {
-        res += "XL"
-        n1 -= 40
-    }
-    while (n1 / 10 > 0) {
-        res += "X"
-        n1 -= 10
-    }
-    while (n1 / 9 > 0) {
-        res += "IX"
-        n1 -= 9
-    }
-    while (n1 / 5 > 0) {
-        res += "V"
-        n1 -= 5
-    }
-    while (n1 / 4 > 0) {
-        res += "IV"
-        n1 -= 4
-    }
-    while (n1 / 1 > 0) {
-        res += "I"
-        n1 -= 1
-    }
-    return res
+    return res.joinToString(separator = "")
 }
+
 
 /**
  * Очень сложная

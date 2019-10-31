@@ -6,6 +6,7 @@ import lesson1.task1.discriminant
 import lesson1.task1.sqr
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -153,24 +154,16 @@ fun rookOrBishopThreatens(
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     if (a + b < c || a + c < b || b + c < a)
         return -1
-    val a2 = sqr(a)
-    val b2 = sqr(b)
-    val c2 = sqr(c)
-    if ((b2 + a2 == c2) || (c2 + a2 == b2) || (b2 + c2 == a2))
+    val max = maxOf(a, b, c)
+    val min = minOf(a, b, c)
+    val mid = a + b + c - max - min
+    if (max * max == mid * mid + min * min)
         return 1
-    when ((a >= b) && (a >= c)) {
-        ((b2 + c2) > a2) -> return 0
-        ((b2 + c2) < a2) -> return 2
-    }
-    when ((b >= a) && (b >= c)) {
-        ((a2 + c2) > b2) -> return 0
-        ((a2 + c2) < b2) -> return 2
-    }
-    return when ((c >= b) && (c >= a)) {
-        ((a2 + b2) > c2) -> 0
-        else -> 2
-    }
+    if (max * max > min * min + mid * mid)
+        return 2
+    return 0
 }
+
 
 /**
  * Средняя
