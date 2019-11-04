@@ -392,6 +392,9 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var a = -1
     var b = -1
     if (list.isEmpty()) return -1 to -1
+    if (list.size == 1 && list[0] == number) {
+        return 0 to 0
+    }
     val sort = list.sorted()
     var begin = 0
     var end = list.size - 1

@@ -335,7 +335,7 @@ class Tests {
     @Tag("Hard")
     fun findSumOfTwo() {
         assertEquals(
-            Pair(1, 2),
+            Pair(0, 2),
             findSumOfTwo(
                 listOf(
                     0,
