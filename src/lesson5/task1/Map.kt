@@ -2,7 +2,7 @@
 
 package lesson5.task1
 
-import lesson2.task1.triangleKind
+import ru.spbstu.kotlin.typeclass.kind
 
 /**
  * Пример
@@ -96,9 +96,9 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val res = mutableMapOf<Int, MutableList<String>>()
     for ((name, grade) in grades) {
-        if (res[grade] != null)
+        res.getOrPut((grade), { mutableListOf(name) })
+        if (!res[grade]?.contains(name)!!)
             res[grade]!!.add(name)
-        else res[grade] = mutableListOf(name)
     }
     return res
 }
@@ -148,12 +148,8 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val res = mutableListOf<String>()
-    for (name in a) {
-        if (b.contains(name) && !res.contains(name))
-            res.add(name)
-    }
-    return res
+    a.toSet(); b.toSet()
+    return a.intersect(b).toList()
 }
 
 /**
@@ -179,15 +175,15 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
         if (mapB.containsKey(name)) {
             if (mapA[name] != mapB[name]) {
                 val numbers = mutableListOf<String>()
-                numbers.add(mapA[name] ?: error(""))
-                numbers.add(mapB[name] ?: error(""))
+                numbers.add(mapA[name]!!)
+                numbers.add(mapB[name]!!)
                 res[name] = numbers.joinToString()
                 numbers.clear()
             } else {
-                res[name] = mapA[name].toString()
+                res[name] = mapA[name]!!
             }
         } else {
-            res[name] = mapA[name].toString()
+            res[name] = mapA[name]!!
         }
     }
     for ((name, tel) in mapB) {
@@ -243,7 +239,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    val res = mutableMapOf<String, Pair<Double, String>>() // Создал Мар (Печенье to (20.00 to Мария))
+    val res = mutableMapOf<String, Pair<Double, String>>()
     for ((name, value) in stuff) {
         if (!res.containsKey(value.first))
             res[value.first] = value.second to name
@@ -266,6 +262,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    word.toSet()
     for (i in word.toLowerCase()) {
         if (!chars.contains(i) && !chars.contains(i.toUpperCase()))
             return false
@@ -288,18 +285,12 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val imp = mutableMapOf<String, Int>()
-    val res = mutableMapOf<String, Int>()
-    if (list.isEmpty()) return mapOf<String, Int>()
     for (char in list) {
         if (!imp.containsKey(char))
             imp[char] = 1
         else imp[char] = imp[char]!! + 1
     }
-    for ((name, value) in imp) {
-        if (imp[name] != 1)
-            res[name] = value
-    }
-    return res
+    return imp.filter { (key, value) -> value != 1 }
 }
 
 /**
@@ -390,33 +381,21 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var a = -1
-    var b = -1
+    var map = mutableMapOf<Int, Int>()
     if (list.isEmpty()) return -1 to -1
-    if (list.size == 1 && list[0] == number) {
-        return 0 to 0
-    }
-    val sort = list.sorted()
-    var begin = 0
-    var end = list.size - 1
-    if (list[begin] + list[end] == number)
-        return begin to end
-    while (sort[begin] < sort[end]) {
-        if (sort[begin] + sort[end] == number) {
-            for (i in list.indices) {
-                if (list[i] == sort[begin] && a == -1)
-                    a = i
-                if (list[i] == sort[end] && b == -1)
-                    b = i
-            }
-            return a to b
-        } else {
-            if (sort[begin] + sort[end] < number)
-                begin += 1
-            else end -= 1
-        }
+    for (i in list.indices) {
+        if (map.containsValue(number - list[i])) {
+            for ((key, value) in map)
+                if (value == number - list[i]) {
+                    a = key
+                    break
+                }
+            return a to i
+        } else map[i] = list[i]
     }
     return -1 to -1
 }
+
 
 /**
  * Очень сложная
