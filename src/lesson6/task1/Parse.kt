@@ -82,7 +82,9 @@ fun dateStrToDigit(str: String): String {
     )
     when {
         (dates.size != 3) -> return ""
+        (Regex("""[a-z]""").containsMatchIn(dates[0])) -> return ""
         (Regex("""[0-9]""").containsMatchIn(dates[1])) -> return ""
+        (Regex("""[a-z]""").containsMatchIn(dates[2])) -> return ""
     }
     val day = dates[0].toInt()
     val month = months.indexOf(dates[1]) + 1
@@ -105,8 +107,8 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val dates = digital.split(".")
-    if (dates.size != 3) return ""
     when {
+        (dates.size != 3) -> return ""
         (Regex("""[^0-9]""").containsMatchIn(dates[0])) -> return ""
         (Regex("""[^0-9]""").containsMatchIn(dates[1])) -> return ""
         (Regex("""[^0-9]""").containsMatchIn(dates[2])) -> return ""
