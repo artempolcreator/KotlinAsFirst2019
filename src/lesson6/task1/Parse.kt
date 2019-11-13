@@ -2,6 +2,9 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
+
 /**
  * Пример
  *
@@ -69,7 +72,26 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val dates = str.split(" ")
+    val months = listOf(
+        "января", "февраля", "марта",
+        "апреля", "мая", "июня",
+        "июля", "августа", "сентября",
+        "октября", "ноября", "декабря"
+    )
+    when {
+        (dates.size != 3) -> return ""
+        (Regex("""[0-9]""").containsMatchIn(dates[1])) -> return ""
+    }
+    val day = dates[0].toInt()
+    val month = months.indexOf(dates[1]) + 1
+    val year = dates[2].toInt()
+    if ((month !in 1..12) || daysInMonth(month, year) < day)
+        return ""
+    return String.format("%02d.%02d.%d", day, month, year)
+}
+
 
 /**
  * Средняя
@@ -81,7 +103,28 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val dates = digital.split(".")
+    if (dates.size != 3) return ""
+    when {
+        (Regex("""[^0-9]""").containsMatchIn(dates[0])) -> return ""
+        (Regex("""[^0-9]""").containsMatchIn(dates[1])) -> return ""
+        (Regex("""[^0-9]""").containsMatchIn(dates[2])) -> return ""
+    }
+    val months = listOf(
+        "января", "февраля", "марта",
+        "апреля", "мая", "июня",
+        "июля", "августа", "сентября",
+        "октября", "ноября", "декабря"
+    )
+    val day = dates[0].toInt()
+    val year = dates[2].toInt()
+    if ((daysInMonth(dates[1].toInt(), year) < day) || (dates[1].toInt() !in 1..12))
+        return ""
+    val month = months[dates[1].toInt() - 1]
+
+    return String.format("%d %s %d", day, month, year)
+}
 
 /**
  * Средняя
