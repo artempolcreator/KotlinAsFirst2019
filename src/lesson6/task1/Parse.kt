@@ -147,7 +147,7 @@ fun flattenPhoneNumber(phone: String): String {
     val newphone = phone.filter { it != ' ' }
     val list = newphone.toList()
     if (list.contains('(')) {
-        var r = list.indexOf('(')
+        val r = list.indexOf('(')
         if (r + 1 == list.indexOf(')')) return ""
     }
     return newphone.filter { it !in listOf('-', '(', ')') }
@@ -170,7 +170,7 @@ fun bestLongJump(jumps: String): Int {
     if (Regex("""[^0-9%\-\s]""").containsMatchIn(jumps)) return -1
     for (c in jumps) {
         if (c.isDigit()) {
-            var r = c.toString().toInt()
+            val r = c.toString().toInt()
             cur = cur * 10 + r
             if (cur > max)
                 max = cur
@@ -191,7 +191,23 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    var cur = 0
+    var max = -1
+    if (Regex("""[^0-9%+\-\s]""").containsMatchIn(jumps)) return -1
+    val list = jumps.split("")
+    for (c in list) {
+        if (c in "0".."9") {
+            val r = c.toInt()
+            cur = cur * 10 + r
+        } else if (c == "+") {
+            if (cur > max) max = cur
+            cur = 0
+        } else if (c == "-" || c == "%") cur = 0
+    }
+    return max
+}
+
 
 /**
  * Сложная
@@ -202,7 +218,18 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val list = expression.split(" ")
+    require(expression.matches(Regex("""(\d+ [+-] )*\d+""")))
+    var res = list[0].toInt()
+    for (i in 1 until list.size) {
+        if (list[i] == "+")
+            res += list[i + 1].toInt()
+        if (list[i] == "-")
+            res -= list[i + 1].toInt()
+    }
+    return res
+}
 
 /**
  * Сложная
