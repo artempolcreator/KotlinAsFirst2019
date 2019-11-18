@@ -263,7 +263,7 @@ fun mostExpensive(description: String): String {
     val list = description.split("; ")
     val prices = mutableListOf<String>()
     var res = ""
-    var max = 0.0
+    var max = -0.1
     for (r in list) {
         if (r != "") {
             val prz = r.split(" ")
