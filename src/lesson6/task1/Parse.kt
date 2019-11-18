@@ -4,6 +4,13 @@ package lesson6.task1
 
 import lesson2.task2.daysInMonth
 
+val months = listOf(
+    "января", "февраля", "марта",
+    "апреля", "мая", "июня",
+    "июля", "августа", "сентября",
+    "октября", "ноября", "декабря"
+)
+
 
 /**
  * Пример
@@ -74,12 +81,6 @@ fun main() {
  */
 fun dateStrToDigit(str: String): String {
     val dates = str.split(" ")
-    val months = listOf(
-        "января", "февраля", "марта",
-        "апреля", "мая", "июня",
-        "июля", "августа", "сентября",
-        "октября", "ноября", "декабря"
-    )
     when {
         (dates.size != 3) -> return ""
         (Regex("""[a-z]""").containsMatchIn(dates[0])) -> return ""
@@ -113,12 +114,6 @@ fun dateDigitToStr(digital: String): String {
         (Regex("""[^0-9]""").containsMatchIn(dates[1])) -> return ""
         (Regex("""[^0-9]""").containsMatchIn(dates[2])) -> return ""
     }
-    val months = listOf(
-        "января", "февраля", "марта",
-        "апреля", "мая", "июня",
-        "июля", "августа", "сентября",
-        "октября", "ноября", "декабря"
-    )
     val day = dates[0].toInt()
     val year = dates[2].toInt()
     if ((daysInMonth(dates[1].toInt(), year) < day) || (dates[1].toInt() !in 1..12))
@@ -245,13 +240,13 @@ fun firstDuplicateIndex(str: String): Int {
     if (list.isEmpty() || list.size == 1) return -1
     var res = 0
     for (i in 0 until list.size - 1) {
-        res += list[i].toCharArray().size
         if (list[i].toLowerCase() == list[i + 1].toLowerCase())
-            return res + 1
+            return res
+        else res += list[i].toCharArray().size + 1
     }
     return -1
 }
-//5.12 7.33 19.18
+
 /**
  * Сложная
  *
@@ -263,7 +258,27 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    if (Regex("""[^0-9а-я.;А-Я\s]""").containsMatchIn(description)) return ""
+    val list = description.split("; ")
+    val prices = mutableListOf<String>()
+    var res = ""
+    var max = 0.0
+    for (r in list) {
+        if (r != "") {
+            val prz = r.split(" ")
+            prices.add(prz[0].toString())
+            prices.add(prz[1].toString())
+        }
+    }
+    for (i in 1 until prices.size step 2) {
+        if (prices[i].toDouble() > max) {
+            max = prices[i].toDouble()
+            res = prices[i - 1]
+        }
+    }
+    return res
+}
 
 /**
  * Сложная
