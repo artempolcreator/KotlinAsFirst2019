@@ -95,6 +95,11 @@ fun sibilants(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
     val file = File(inputName).readText()
     var str = StringBuilder()
+    if (file.isEmpty()) {
+        str.append("")
+        outputStream.write(str.toString())
+        outputStream.close()
+    }
     val exLetters = mapOf('ы' to 'и', 'Ы' to 'И', 'я' to 'а', 'Я' to 'А', 'ю' to 'у', 'Ю' to 'У')
     val listOfTriggers = listOf('Ж', 'ж', 'Ш', 'ш', 'Ч', 'ч', 'Щ', 'щ')
     str.append(file[0])
