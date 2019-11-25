@@ -138,7 +138,7 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    if (Regex("""[^0-9+\-()\s]""").containsMatchIn(phone)) return ""
+    if (Regex("""[^0-9+\-() ]""").containsMatchIn(phone)) return ""
     val newphone = phone.filter { it != ' ' }
     val list = newphone.toList()
     if (list.contains('(')) {
@@ -259,7 +259,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    if (Regex("""[^0-9а-я.;А-Я\s]""").containsMatchIn(description)) return ""
+    if (!Regex("""[^0-9а-я.;А-Я\s]""").containsMatchIn (description)) return ""
     val list = description.split("; ")
     val prices = mutableListOf<String>()
     var res = ""
