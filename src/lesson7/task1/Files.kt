@@ -55,13 +55,13 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  *
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    var result = mutableMapOf<String, Int>()
-    val file = File(inputName).readText().toLowerCase()
+    val result = mutableMapOf<String, Int>()
+    val inputText = File(inputName).readText().toLowerCase()
     val substrings2 = substrings.toSet()
     for (str in substrings2) {
         result[str] = 0
     }
-    val listFile = file.toMutableList()
+    val listFile = inputText.toMutableList()
     var chars = mutableListOf<Char>()
     for (str in substrings2) {
         for (r in 0..listFile.size - str.length) {
@@ -92,28 +92,24 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    val outputStream = File(outputName).bufferedWriter()
-    val file = File(inputName).readText()
-    var str = StringBuilder()
-    if (file.isEmpty()) {
-        str.append("")
-        outputStream.write(str.toString())
-        outputStream.close()
-    }
-    val exLetters = mapOf('ы' to 'и', 'Ы' to 'И', 'я' to 'а', 'Я' to 'А', 'ю' to 'у', 'Ю' to 'У')
-    val listOfTriggers = listOf('Ж', 'ж', 'Ш', 'ш', 'Ч', 'ч', 'Щ', 'щ')
-    str.append(file[0])
-    for (i in 1 until file.length) {
-        if ((listOfTriggers.contains(file[i - 1])) && (exLetters.containsKey(file[i]))) {
-            str.append(exLetters[file[i]])
-        } else {
-            str.append(file[i])
+    val outputStream = File(outputName).bufferedWriter().use {
+        val inputText = File(inputName).readText()
+        if (inputText.isEmpty()) it.close()
+        else {
+            val str = StringBuilder().append(inputText[0])
+            val exLetters = mapOf('ы' to 'и', 'Ы' to 'И', 'я' to 'а', 'Я' to 'А', 'ю' to 'у', 'Ю' to 'У')
+            val listOfTriggers = listOf('Ж', 'ж', 'Ш', 'ш', 'Ч', 'ч', 'Щ', 'щ')
+            for (i in 1 until inputText.length) {
+                if ((listOfTriggers.contains(inputText[i - 1])) && (exLetters.containsKey(inputText[i]))) {
+                    str.append(exLetters[inputText[i]])
+                } else {
+                    str.append(inputText[i])
+                }
+            }
+            it.write(str.toString())
         }
     }
-    outputStream.write(str.toString())
-    outputStream.close()
 }
-
 
 
 /**
@@ -186,7 +182,23 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    val map = mutableMapOf<String, Int>()
+    val res = mutableMapOf<String, Int>()
+    for (line in File(inputName).readLines()) {
+        val currentLine = line.split(Regex("""[^А-яA-zЁё]""")).filter { it != "" }
+        for (i in currentLine) {
+            map[i.toLowerCase()] = map.getOrDefault(i.toLowerCase(), 0) + 1
+        }
+    }
+    val map2 = map.toList().sortedBy { (key, value) -> value }.reversed().toMap().toMutableMap()
+    var i = 1
+    for ((key, value) in map2) {
+        if (i <= 20) res[key] = value
+        i++
+    }
+    return res
+}
 
 /**
  * Средняя

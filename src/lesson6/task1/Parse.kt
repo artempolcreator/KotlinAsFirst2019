@@ -139,13 +139,13 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     if (Regex("""[^0-9+\-() ]""").containsMatchIn(phone)) return ""
-    val newphone = phone.filter { it != ' ' }
-    val list = newphone.toList()
+    val newPhone = phone.filter { it != ' ' }
+    val list = newPhone.toList()
     if (list.contains('(')) {
         val r = list.indexOf('(')
         if (r + 1 == list.indexOf(')')) return ""
     }
-    return newphone.filter { it !in listOf('-', '(', ')') }
+    return newPhone.filter { it !in listOf('-', '(', ')') }
 
 }
 
@@ -173,6 +173,7 @@ fun bestLongJump(jumps: String): Int {
     }
     return max
 }
+
 
 
 /**
