@@ -94,11 +94,9 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
-    val res = mutableMapOf<Int, MutableList<String>>()
+    val res = mutableMapOf<Int, List<String>>()
     for ((name, grade) in grades) {
-        res.getOrPut((grade), { mutableListOf(name) })
-        if (!res[grade]?.contains(name)!!)
-            res[grade]!!.add(name)
+        res[grade] = res.getOrDefault(grade, listOf()) + name
     }
     return res
 }
@@ -236,17 +234,17 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    val res = mutableMapOf<String, Pair<Double, String>>()
-    for ((name, value) in stuff) {
-        if (!res.containsKey(value.first))
-            res[value.first] = value.second to name
-        else
-            if (res[value.first]!!.first > value.second)
-                res[value.first] = value.second to name
+    var res = ""
+    var price = stuff.maxBy { it.value.second }
+    var max = price!!.value.second
+    for ((name, food) in stuff) {
+        if ((food.first == kind) && (food.second < max)) {
+            res = name
+            max = food.second
+        }
+
     }
-    return if (res.containsKey(kind))
-        res[kind]!!.second
-    else null
+    return if (res != "") res else null
 }
 
 /**
@@ -259,11 +257,9 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    for (i in word.toLowerCase()) {
-        if (!chars.contains(i) && !chars.contains(i.toUpperCase()))
-            return false
-    }
-    return true
+    val splitWord = word.map { it.toLowerCase() }.toSet()
+    val lowChars = chars.map { it.toLowerCase() }.toSet()
+    return splitWord.intersect(lowChars) == splitWord
 }
 
 
@@ -299,13 +295,10 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean {
-    var res = mutableMapOf<Int, List<Char>>()
-    for (i in words.indices) {
-        val cur = words[i].toList().sorted()
-        if (res.containsValue(cur))
-            return true
-        else
-            res[i] = cur
+    for (i in words.indices - 1) {
+        for (j in i + 1..words.lastIndex)
+            if (words[i].toList().sorted() == words[j].toList().sorted())
+                return true
     }
     return false
 }
@@ -377,7 +370,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var a = -1
-    var map = mutableMapOf<Int, Int>()
+    val map = mutableMapOf<Int, Int>()
     if (list.isEmpty()) return -1 to -1
     for (i in list.indices) {
         if (map.containsValue(number - list[i])) {
