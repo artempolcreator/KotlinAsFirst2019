@@ -79,6 +79,10 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
+
+fun checker(month: Int, day: Int, year: Int): Boolean =
+    ((daysInMonth(month, year) < day) || (month !in 1..12))
+
 fun dateStrToDigit(str: String): String {
     val dates = str.split(" ")
     when {
@@ -90,8 +94,7 @@ fun dateStrToDigit(str: String): String {
     val day = dates[0].toInt()
     val month = months.indexOf(dates[1]) + 1
     val year = dates[2].toInt()
-    if ((month !in 1..12) || daysInMonth(month, year) < day)
-        return ""
+    if (checker(month, day, year)) return ""
     return String.format("%02d.%02d.%d", day, month, year)
 }
 
@@ -116,8 +119,7 @@ fun dateDigitToStr(digital: String): String {
     }
     val day = dates[0].toInt()
     val year = dates[2].toInt()
-    if ((daysInMonth(dates[1].toInt(), year) < day) || (dates[1].toInt() !in 1..12))
-        return ""
+    if (checker(dates[1].toInt(), day, year)) return ""
     val month = months[dates[1].toInt() - 1]
 
     return String.format("%d %s %d", day, month, year)
@@ -138,15 +140,8 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    if (Regex("""[^0-9+\-() ]""").containsMatchIn(phone)) return ""
-    val newPhone = phone.filter { it != ' ' }
-    val list = newPhone.toList()
-    if (list.contains('(')) {
-        val r = list.indexOf('(')
-        if (r + 1 == list.indexOf(')')) return ""
-    }
-    return newPhone.filter { it !in listOf('-', '(', ')') }
-
+    if (!phone.matches(Regex("""\+?[ -]*\d+[ -]*(\(([ -]*[\d]+[ -]*)+\))?[ \d-]*"""))) return ""
+    return phone.filter { it !in listOf('-', '(', ')', ' ') }
 }
 
 /**
@@ -175,7 +170,6 @@ fun bestLongJump(jumps: String): Int {
 }
 
 
-
 /**
  * Сложная
  *
@@ -191,15 +185,14 @@ fun bestHighJump(jumps: String): Int {
     var cur = 0
     var max = -1
     if (Regex("""[^0-9%+\-\s]""").containsMatchIn(jumps)) return -1
-    val list = jumps.split("")
-    for (c in list) {
-        if (c in "0".."9") {
+    for (c in jumps) {
+        if (c in '0'..'9') {
             val r = c.toInt()
             cur = cur * 10 + r
-        } else if (c == "+") {
+        } else if (c == '+') {
             if (cur > max) max = cur
             cur = 0
-        } else if (c == "-" || c == "%") cur = 0
+        } else if (c == '-' || c == '%') cur = 0
     }
     return max
 }
@@ -260,7 +253,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    if (!Regex("""[^0-9а-я.;А-Я\s]""").containsMatchIn (description)) return ""
+    if (!Regex("""[^0-9а-я.;А-Я\s]""").containsMatchIn(description)) return ""
     val list = description.split("; ")
     val prices = mutableListOf<String>()
     var res = ""
