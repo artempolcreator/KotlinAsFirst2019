@@ -278,9 +278,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
                 }
             }
         }
-        if (resStr != null)
-            it.write(resStr.toString())
-        else it.write("")
+        it.write(resStr.toString())
     }
 }
 
