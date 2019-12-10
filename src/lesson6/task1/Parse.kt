@@ -3,6 +3,8 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import java.lang.IllegalArgumentException
+import java.lang.StringBuilder
 
 val months = listOf(
     "января", "февраля", "марта",
@@ -253,7 +255,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    if (!Regex("""([а-яА-Я]+ \d+.\d;* *)+""").containsMatchIn(description)) return ""
+    if (!Regex("""([а-яА-Я]+ \d+(.\d)?;* *)+""").containsMatchIn(description)) return ""
     val list = description.split("; ")
     val prices = mutableListOf<String>()
     var res = ""
@@ -282,6 +284,7 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int = TODO()
+
 
 /**
  * Очень сложная
@@ -321,4 +324,37 @@ fun fromRoman(roman: String): Int = TODO()
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     TODO()
+}
+
+
+fun resOfZabeg(text: String): String {
+    val resStr = StringBuilder()
+    val allreses = mutableMapOf<String, Int>()
+    require(text.matches(Regex("""( *[А-Я]{1}[а-я]+ *\d{2}:\d{2},*)+""")))
+    val results = text.split(", ").toMutableList()
+    val list = mutableListOf<String>()
+    for (index in results.indices) {
+        results[index] = results[index].trim(' ')
+    }
+    for (i in results) {
+        val split = i.split(Regex(""" +"""))
+        list.add(split[0])
+        list.add(split[1])
+    }
+    for (i in list.indices step 2) {
+        allreses[list[i]] = list[i + 1].split(":")[0].toInt() * 60 + (list[i + 1].split(":")[1].toInt())
+    }
+    val allreses2 = allreses.toList().sortedBy { (key, value) -> value }.toMap()
+    for ((key, value) in allreses2) {
+        resStr.append(key)
+        resStr.append(" ")
+        resStr.append(value / 60)
+        resStr.append(":")
+        if (value % 60 == 0) resStr.append("00")
+        else resStr.append(value % 60)
+        resStr.append(",")
+        resStr.append(" ")
+    }
+    resStr.delete(resStr.lastIndex - 1, resStr.lastIndex + 1)
+    return resStr.toString()
 }

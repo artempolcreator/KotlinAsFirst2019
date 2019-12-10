@@ -186,7 +186,7 @@ fun top20Words(inputName: String): Map<String, Int> {
             map[i.toLowerCase()] = map.getOrDefault(i.toLowerCase(), 0) + 1
         }
     }
-    val map2 = map.toList().sortedBy { (key, value) -> value }.reversed().toMap().toMutableMap()
+    val map2 = map.toList().sortedBy { (_, value) -> value }.reversed().toMap().toMutableMap()
     var i = 1
     for ((key, value) in map2) {
         if (i <= 20) res[key] = value
@@ -263,21 +263,22 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     var max = 0
     var res = File(outputName).bufferedWriter().use {
         for (word in File(inputName).readLines()) {
-            val list = mutableListOf<Char>()
-            for (letter in word) {
-                if (!list.contains(letter.toLowerCase())) list.add(letter.toLowerCase())
-            }
-            if (list.size == word.length) {
-                if (list.size == max) {
-                    resStr.append(", ")
-                    resStr.append(word)
+            for (i in word.split(Regex("""\s"""))) {
+                val list = mutableListOf<Char>()
+                for (letter in i) {
+                    if (!list.contains(letter.toLowerCase())) list.add(letter.toLowerCase())
                 }
-                if (list.size > max) {
-                    max = list.size
-                    resStr.append(word)
+                if (list.size == i.length) {
+                    if (list.size == max) {
+                        resStr.append(", ")
+                        resStr.append(i)
+                    }
+                    if (list.size > max) {
+                        max = list.size
+                        resStr.append(i)
+                    }
                 }
             }
-
         }
         if (resStr != null)
             it.write(resStr.toString())

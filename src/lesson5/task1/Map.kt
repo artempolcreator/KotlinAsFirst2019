@@ -235,6 +235,14 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var res = ""
+    var flag = false
+    for ((first) in stuff.values) {
+        if (first == kind) {
+            flag = true
+            break
+        }
+    }
+    if (!flag) return null
     var price = stuff.maxBy { it.value.second }
     var max = price!!.value.second
     for ((name, food) in stuff) {
@@ -242,9 +250,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
             res = name
             max = food.second
         }
-
     }
-    return if (res != "") res else null
+    return res
 }
 
 /**
@@ -295,7 +302,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean {
-    for (i in words.indices - 1) {
+    for (i in words.indices) {
         for (j in i + 1..words.lastIndex)
             if (words[i].toList().sorted() == words[j].toList().sorted())
                 return true
