@@ -231,31 +231,7 @@ fun top20Words(inputName: String): Map<String, Int> {
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    val outputText = File(outputName).bufferedWriter().use {
-        val inputText = File(inputName).readText()
-        val resStr = StringBuilder()
-        for (letter in inputText) {
-            if (dictionary.containsKey(letter.toLowerCase()) || dictionary.containsKey(letter.toUpperCase())) {
-                if (letter.isUpperCase()) {
-                    val upperDict = StringBuilder()
-                    if (dictionary[letter] != null) {
-                        upperDict.append(dictionary[letter])
-                        upperDict[0] = upperDict[0].toUpperCase()
-                        resStr.append(upperDict)
-                    } else {
-                        upperDict.append(dictionary[letter.toLowerCase()]!!.toLowerCase())
-                        upperDict[0] = upperDict[0].toUpperCase()
-                        resStr.append(upperDict)
-                    }
-                } else {
-                    if (dictionary[letter] != null) resStr.append(dictionary[letter]!!.toLowerCase())
-                    else resStr.append(dictionary[letter.toUpperCase()]!!.toLowerCase())
-                }
-
-            } else resStr.append(letter)
-        }
-        it.write(resStr.toString())
-    }
+    TODO()
 }
 
 /**
@@ -283,25 +259,29 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    var resStr = StringBuilder()
+    val resStr = StringBuilder()
     var max = 0
     var res = File(outputName).bufferedWriter().use {
         for (word in File(inputName).readLines()) {
-            var list = mutableListOf<Char>()
+            val list = mutableListOf<Char>()
             for (letter in word) {
                 if (!list.contains(letter.toLowerCase())) list.add(letter.toLowerCase())
             }
-            if (list.size == max) {
-                resStr.append(", ")
-                resStr.append(word)
-            }
-            if (list.size > max) {
-                max = list.size
-                resStr.append(word)
+            if (list.size == word.length) {
+                if (list.size == max) {
+                    resStr.append(", ")
+                    resStr.append(word)
+                }
+                if (list.size > max) {
+                    max = list.size
+                    resStr.append(word)
+                }
             }
 
         }
-        it.write(resStr.toString())
+        if (resStr != null)
+            it.write(resStr.toString())
+        else it.write("")
     }
 }
 

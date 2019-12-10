@@ -157,7 +157,7 @@ fun flattenPhoneNumber(phone: String): String {
 fun bestLongJump(jumps: String): Int {
     var max = -1
     var cur = 0
-    if (!jumps.matches(Regex("""(([%-]|\d{3}) )+(\d{3}|[%-])"""))) return -1
+    if (!jumps.matches(Regex("""(([%-]|\d{3}) *)+"""))) return -1
     for (c in jumps) {
         if (c.isDigit()) {
             val r = c.toString().toInt()
@@ -184,7 +184,7 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     var cur = 0
     var max = -1
-    if (Regex("""[^0-9%+\-\s]""").containsMatchIn(jumps)) return -1
+    if (Regex("""(\d{3} [-%+]+ *)+""").containsMatchIn(jumps)) return -1
     for (c in jumps) {
         if (c in '0'..'9') {
             val r = c.toInt()
@@ -236,7 +236,7 @@ fun firstDuplicateIndex(str: String): Int {
     for (i in 0 until list.size - 1) {
         if (list[i].toLowerCase() == list[i + 1].toLowerCase())
             return res
-        else res += list[i].toCharArray().size + 1
+        else res += list[i].length + 1
     }
     return -1
 }
@@ -253,7 +253,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    if (!Regex("""[^0-9а-я.;А-Я\s]""").containsMatchIn(description)) return ""
+    if (!Regex("""([а-яА-Я]+ \d+.\d;* *)+""").containsMatchIn(description)) return ""
     val list = description.split("; ")
     val prices = mutableListOf<String>()
     var res = ""
@@ -261,14 +261,10 @@ fun mostExpensive(description: String): String {
     for (r in list) {
         if (r != "") {
             val prz = r.split(" ")
-            prices.add(prz[0].toString())
-            prices.add(prz[1].toString())
-        }
-    }
-    for (i in 1 until prices.size step 2) {
-        if (prices[i].toDouble() > max) {
-            max = prices[i].toDouble()
-            res = prices[i - 1]
+            if (prz[1].toDouble() > max) {
+                res = prz[0]
+                max = prz[1].toDouble()
+            }
         }
     }
     return res
