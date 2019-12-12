@@ -287,7 +287,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
             it.write("")
         } else {
             for (word in text.split(Regex("""\s+"""))) {
-                var set = word.toSet()
+                var set = word.toLowerCase().toSet()
                 if (set.size == word.length) {
                     if (set.size == max) {
                         resStr.append(", ")
