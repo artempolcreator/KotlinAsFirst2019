@@ -500,6 +500,7 @@ fun markdownToHtml(inputName: String, outputName: String) {
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     val length1 = lhv.toString().length
     val length2 = rhv.toString().length
+    val sum = length1 + length2
     val outputText = File(outputName).bufferedWriter().use {
         it.write(" ".repeat(length2))
         it.write(lhv.toString())
@@ -507,23 +508,24 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
         it.write(" ".repeat(length1 - 1))
         it.write(rhv.toString())
         it.write("\n")
-        it.write("-".repeat(length1 + length2))
+        it.write("-".repeat(sum))
         it.write("\n")
         for (i in 1..length2) {
+            val number = rhv.toString()[length2 - i].toString().toInt()
             if (i >= 2) {
                 it.write("+")
                 it.write(" ".repeat(length2 - i))
-                it.write((lhv * rhv.toString()[length2 - i].toString().toInt()).toString())
+                it.write((lhv * number).toString())
                 it.write("\n")
             } else {
-                it.write(" ".repeat(length1 + length2 - (lhv * rhv.toString()[length2 - 1].toString().toInt()).toString().length))
-                it.write((lhv * rhv.toString()[length2 - 1].toString().toInt()).toString())
+                it.write(" ".repeat(sum - (lhv * number).toString().length))
+                it.write((lhv * number).toString())
                 it.write("\n")
             }
         }
-        it.write("-".repeat(length1 + length2))
+        it.write("-".repeat(sum))
         it.write("\n")
-        it.write(" ".repeat(length1 + length2 - (rhv * lhv).toString().length))
+        it.write(" ".repeat(sum - (rhv * lhv).toString().length))
         it.write((rhv * lhv).toString())
     }
 }
