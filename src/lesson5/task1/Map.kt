@@ -246,7 +246,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     var price = stuff.maxBy { it.value.second }
     var max = price!!.value.second
     for ((name, food) in stuff) {
-        if ((food.first == kind) && (food.second < max)) {
+        if ((food.first == kind) && (food.second <= max)) {
             res = name
             max = food.second
         }

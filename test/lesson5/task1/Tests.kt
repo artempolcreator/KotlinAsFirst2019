@@ -215,6 +215,13 @@ class Tests {
     @Tag("Normal")
     fun findCheapestStuff() {
         assertEquals(
+            "F",
+            findCheapestStuff(
+                mapOf("F" to ("\"\"" to 0.0)),
+                "\"\""
+            )
+        )
+        assertEquals(
             "",
             findCheapestStuff(
                 mapOf("" to ("" to 0.0)),
@@ -234,6 +241,7 @@ class Tests {
                 "печенье"
             )
         )
+
 
     }
 
