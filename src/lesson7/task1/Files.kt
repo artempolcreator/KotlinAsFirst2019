@@ -247,7 +247,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
         }
         for (c in File(inputName).readText()) {
             if (newDict.containsKey(c.toLowerCase())) {
-                if (c.isLowerCase()) it.write(newDict[c.toLowerCase()]!!)
+                if (c.isLowerCase() || c.isDigit()) it.write(newDict[c.toLowerCase()]!!)
                 else it.write(newDict[c.toLowerCase()]!!.capitalize())
             } else it.write(c.toString())
         }
