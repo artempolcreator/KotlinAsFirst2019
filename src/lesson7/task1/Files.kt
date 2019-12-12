@@ -199,9 +199,8 @@ fun top20Words(inputName: String): Map<String, Int> {
             map[i.toLowerCase()] = map.getOrDefault(i.toLowerCase(), 0) + 1
         }
     }
-    val map2 = map.toList().sortedBy { (_, value) -> value }.reversed().toMap().toMutableMap()
-    var i = 1
-    res = map2.toList().take(20).toMap()
+    val map2 = map.toList().sortedByDescending { it.second }
+    res = map2.take(20).toMap()
     return res
 }
 
@@ -241,7 +240,18 @@ fun top20Words(inputName: String): Map<String, Int> {
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    TODO()
+    var outputText = File(outputName).bufferedWriter().use {
+        val newDict = mutableMapOf<Char, String>()
+        for ((key, value) in dictionary) {
+            newDict[key.toLowerCase()] = value.toLowerCase()
+        }
+        for (c in File(inputName).readText()) {
+            if (newDict.containsKey(c.toLowerCase())) {
+                if (c.isLowerCase()) it.write(newDict[c.toLowerCase()]!!)
+                else it.write(newDict[c.toLowerCase()]!!.capitalize())
+            } else it.write(c.toString())
+        }
+    }
 }
 
 /**
