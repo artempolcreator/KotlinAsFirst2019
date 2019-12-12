@@ -247,8 +247,8 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
         }
         for (c in File(inputName).readText()) {
             if (newDict.containsKey(c.toLowerCase())) {
-                if (c.isLowerCase() || c.isDigit()) it.write(newDict[c.toLowerCase()]!!)
-                else it.write(newDict[c.toLowerCase()]!!.capitalize())
+                if (c in 'A'..'Z' || c in 'А'..'Я') it.write(newDict[c.toLowerCase()]!!.capitalize())
+                else it.write(newDict[c.toLowerCase()]!!)
             } else it.write(c.toString())
         }
     }
@@ -498,7 +498,7 @@ fun markdownToHtml(inputName: String, outputName: String) {
  *
  */
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+
 }
 
 
