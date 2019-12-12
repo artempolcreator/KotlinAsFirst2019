@@ -298,7 +298,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
                     }
                 }
             }
-            resStr.delete(text.length - 2, text.length)
+            resStr.delete(resStr.lastIndex - 1, resStr.lastIndex + 1)
         }
         it.write(resStr.toString())
 
