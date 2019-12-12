@@ -514,7 +514,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
             val number = rhv.toString()[length2 - i].toString().toInt()
             if (i >= 2) {
                 it.write("+")
-                it.write(" ".repeat(length2 - i))
+                it.write(" ".repeat((sum - (lhv * number).toString().length - i)))
                 it.write((lhv * number).toString())
                 it.write("\n")
             } else {
