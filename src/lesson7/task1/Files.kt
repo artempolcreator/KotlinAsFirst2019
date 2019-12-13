@@ -176,22 +176,30 @@ fun alignFileByWidth(inputName: String, outputName: String) {
             if (lineSize > maxLength) maxLength = lineSize
         }
         for (line in File(inputName).readLines()) {
-            if (line.isEmpty()) it.write("\n")
-            if (line.split(Regex("""\s+""")).size == 1) {
-                it.write(line.trim())
-                it.write("\n")
-            }
-            val newLine = line.replace(Regex("""\s+"""), " ").trim()
-            val countSpaces = newLine.split(" ").size - 1
-            val spacesBetween = (maxLength - newLine.length) / countSpaces
-            var extraSpaces = maxLength - newLine.length % countSpaces
-            for (word in newLine.split(" ")) {
-                it.write(word)
-                if (extraSpaces > 0) {
-                    it.write(" ".repeat(spacesBetween + 1))
-                    extraSpaces = -1
-                } else it.write(" ".repeat(spacesBetween))
-
+            when {
+                line.isEmpty() -> it.write("\n")
+                line.trim().split(Regex("""\s+""")).size == 1 -> {
+                    it.write(line.trim())
+                    it.write("\n")
+                }
+                else -> {
+                    val nowLine = line.replace(Regex("""\s+"""), " ").trim()
+                    val countSpaces = nowLine.split(" ").size - 1
+                    val spacesBetween = (maxLength - nowLine.length) / countSpaces
+                    var extraSpaces = (maxLength - nowLine.length) % countSpaces
+                    var wordsPoool = nowLine.split(" ").size
+                    for (word in nowLine.split(" ")) {
+                        it.write(word)
+                        if (wordsPoool > 1) {
+                            if (extraSpaces > 0) {
+                                it.write(" ".repeat(spacesBetween + 2))
+                                extraSpaces -= 1
+                            } else it.write(" ".repeat(spacesBetween + 1))
+                            wordsPoool -= 1
+                        }
+                    }
+                    it.write("\n")
+                }
             }
         }
     }
