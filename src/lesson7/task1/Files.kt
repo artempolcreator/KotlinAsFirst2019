@@ -287,21 +287,19 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
             it.write("")
         } else {
             for (word in text.split(Regex("""\s+"""))) {
-                if (word.toLowerCase().toSet().size > max) max = word.toLowerCase().toSet().size
+                val charsSet = word.toLowerCase().toSet()
+                if ((charsSet.size > max) && (charsSet.size == word.length)) max = charsSet.size
             }
             for (word in text.split(Regex("""\s+"""))) {
                 val set = word.toLowerCase().toSet()
                 if ((set.size == word.length) && (set.size == max)) {
-                    if (set.size == max) {
-                        resStr.append(word)
-                        resStr.append(", ")
-                    }
+                    resStr.append(word)
+                    resStr.append(", ")
                 }
             }
             if (resStr.isNotEmpty()) resStr.delete(resStr.lastIndex - 1, resStr.lastIndex + 1)
         }
         it.write(resStr.toString())
-
     }
 }
 
@@ -498,25 +496,25 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     val length1 = lhv.toString().length
     val length2 = rhv.toString().length
     val sum = length1 + length2
-    val chertochki = (rhv * lhv).toString().length + 1
+    val dashes = (rhv * lhv).toString().length + 1
     val outputText = File(outputName).bufferedWriter().use {
-        it.write(" ".repeat(length2))
+        it.write(" ".repeat(dashes - length1))
         it.write(lhv.toString())
         it.write("\n*")
-        it.write(" ".repeat(length1 - 1))
+        it.write(" ".repeat(dashes - length2 - 1))
         it.write(rhv.toString())
         it.write("\n")
-        it.write("-".repeat(chertochki))
+        it.write("-".repeat(dashes))
         it.write("\n")
         for (i in 1..length2) {
             val number = rhv.toString()[length2 - i].toString().toInt()
             if (i >= 2) {
                 it.write("+")
-                it.write(" ".repeat((chertochki - (lhv * number).toString().length - i)))
+                it.write(" ".repeat((dashes - (lhv * number).toString().length - i)))
                 it.write((lhv * number).toString())
                 it.write("\n")
             } else {
-                it.write(" ".repeat(chertochki - (lhv * number).toString().length))
+                it.write(" ".repeat(dashes - (lhv * number).toString().length))
                 it.write((lhv * number).toString())
                 it.write("\n")
             }
