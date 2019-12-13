@@ -521,7 +521,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
         }
         it.write("-".repeat((rhv * lhv).toString().length + 1))
         it.write("\n")
-        it.write(" ".repeat(sum - (rhv * lhv).toString().length))
+        it.write(" ".repeat(dashes - (rhv * lhv).toString().length))
         it.write((rhv * lhv).toString())
     }
 }
