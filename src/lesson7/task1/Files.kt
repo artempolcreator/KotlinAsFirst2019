@@ -298,7 +298,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
                     }
                 }
             }
-            resStr.delete(resStr.lastIndex - 1, resStr.lastIndex + 1)
+            if (resStr.toString() != "") resStr.delete(resStr.lastIndex - 1, resStr.lastIndex + 1)
         }
         it.write(resStr.toString())
 
@@ -498,6 +498,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     val length1 = lhv.toString().length
     val length2 = rhv.toString().length
     val sum = length1 + length2
+    val chertochki = (rhv * lhv).toString().length + 1
     val outputText = File(outputName).bufferedWriter().use {
         it.write(" ".repeat(length2))
         it.write(lhv.toString())
@@ -505,22 +506,22 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
         it.write(" ".repeat(length1 - 1))
         it.write(rhv.toString())
         it.write("\n")
-        it.write("-".repeat(sum))
+        it.write("-".repeat(chertochki))
         it.write("\n")
         for (i in 1..length2) {
             val number = rhv.toString()[length2 - i].toString().toInt()
             if (i >= 2) {
                 it.write("+")
-                it.write(" ".repeat((sum - (lhv * number).toString().length - i)))
+                it.write(" ".repeat((chertochki - (lhv * number).toString().length - i)))
                 it.write((lhv * number).toString())
                 it.write("\n")
             } else {
-                it.write(" ".repeat(sum - (lhv * number).toString().length))
+                it.write(" ".repeat(chertochki - (lhv * number).toString().length))
                 it.write((lhv * number).toString())
                 it.write("\n")
             }
         }
-        it.write("-".repeat(sum))
+        it.write("-".repeat((rhv * lhv).toString().length + 1))
         it.write("\n")
         it.write(" ".repeat(sum - (rhv * lhv).toString().length))
         it.write((rhv * lhv).toString())
