@@ -124,13 +124,21 @@ fun sibilants(inputName: String, outputName: String) {
  * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых)
  *
  */
+
+fun findMaxLine(max: Int, inputName: String): Int {
+    var maxLength = max
+    for (line in File(inputName).readLines()) {
+        val lineSize = line.trim().length
+        if (lineSize > maxLength) maxLength = lineSize
+    }
+    return maxLength
+}
+
+
 fun centerFile(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter().use {
         var maxLength = 0
-        for (line in File(inputName).readLines()) {
-            val lineSize = line.trim().length
-            if (lineSize > maxLength) maxLength = lineSize
-        }
+        maxLength = findMaxLine(maxLength, inputName)
         for (line in File(inputName).readLines()) {
             val curLeng = line.trim().length
             it.write(" ".repeat((maxLength - curLeng) / 2))
@@ -171,10 +179,7 @@ fun centerFile(inputName: String, outputName: String) {
 fun alignFileByWidth(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter().use {
         var maxLength = 0
-        for (line in File(inputName).readLines()) {
-            val lineSize = line.replace(Regex("""\s+"""), " ").trim().length
-            if (lineSize > maxLength) maxLength = lineSize
-        }
+        maxLength = findMaxLine(maxLength, inputName)
         for (line in File(inputName).readLines()) {
             when {
                 line.isEmpty() -> it.write("\n")
@@ -324,8 +329,8 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
                 if ((charsSet.size > max) && (charsSet.size == word.length)) max = charsSet.size
             }
             for (word in text.split(Regex("""\s+"""))) {
-                val set = word.toLowerCase().toSet()
-                if ((set.size == word.length) && (set.size == max)) {
+                val letters = word.toLowerCase().toSet()
+                if ((letters.size == word.length) && (letters.size == max)) {
                     resStr.append(word)
                     resStr.append(", ")
                 }

@@ -2,8 +2,6 @@
 
 package lesson5.task1
 
-import ru.spbstu.kotlin.typeclass.kind
-
 /**
  * Пример
  *

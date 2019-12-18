@@ -159,7 +159,8 @@ fun flattenPhoneNumber(phone: String): String {
 fun bestLongJump(jumps: String): Int {
     var max = -1
     var cur = 0
-    if (!jumps.matches(Regex("""(([%-]|\d{3}) *)+"""))) return -1
+    if (!jumps.matches(Regex("""((\d+|%|-) )*(\d+|%|-)"""))) return -1
+    val newJumps = jumps.split(" ")
     for (c in jumps) {
         if (c.isDigit()) {
             val r = c.toString().toInt()
@@ -186,15 +187,15 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     var cur = 0
     var max = -1
-    if (Regex("""(\d{3} [-%+]+ *)+""").containsMatchIn(jumps)) return -1
-    for (c in jumps) {
-        if (c in '0'..'9') {
-            val r = c.toInt()
-            cur = cur * 10 + r
-        } else if (c == '+') {
-            if (cur > max) max = cur
-            cur = 0
-        } else if (c == '-' || c == '%') cur = 0
+    if (!Regex("""(\d+ [-%+]+ )*(\d+ [-%+]+)""").matches(jumps)) return -1
+    val newJumps = jumps.split(Regex("""\s+"""))
+    for (i in newJumps.indices step 2) {
+        if (!newJumps[i].matches(Regex("""[0-9]+"""))) return -1
+        if (!newJumps[i + 1].matches(Regex("""[+%-]+"""))) return -1
+    }
+    for (i in newJumps.indices step 2) {
+        if ((newJumps[i].toInt() > max) && (newJumps[i + 1].contains(Regex("""\+"""))))
+            max = newJumps[i].toInt()
     }
     return max
 }
@@ -255,7 +256,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    if (!Regex("""([а-яА-Я]+ \d+(.\d)?;* *)+""").containsMatchIn(description)) return ""
+    if (!Regex("""([а-яА-Я]+ \d+(.\d)?;* *)+""").matches(description)) return ""
     val list = description.split("; ")
     val prices = mutableListOf<String>()
     var res = ""
@@ -269,8 +270,7 @@ fun mostExpensive(description: String): String {
             }
         }
     }
-    return if (max == 0.0) "Any good with price 0.0"
-    else res
+    return res
 }
 
 /**
@@ -325,37 +325,4 @@ fun fromRoman(roman: String): Int = TODO()
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     TODO()
-}
-
-
-fun resOfZabeg(text: String): String {
-    val resStr = StringBuilder()
-    val allreses = mutableMapOf<String, Int>()
-    require(text.matches(Regex("""( *[А-Я]{1}[а-я]+ *\d{2}:\d{2},*)+""")))
-    val results = text.split(", ").toMutableList()
-    val list = mutableListOf<String>()
-    for (index in results.indices) {
-        results[index] = results[index].trim(' ')
-    }
-    for (i in results) {
-        val split = i.split(Regex(""" +"""))
-        list.add(split[0])
-        list.add(split[1])
-    }
-    for (i in list.indices step 2) {
-        allreses[list[i]] = list[i + 1].split(":")[0].toInt() * 60 + (list[i + 1].split(":")[1].toInt())
-    }
-    val allreses2 = allreses.toList().sortedBy { (key, value) -> value }.toMap()
-    for ((key, value) in allreses2) {
-        resStr.append(key)
-        resStr.append(" ")
-        resStr.append(value / 60)
-        resStr.append(":")
-        if (value % 60 == 0) resStr.append("00")
-        else resStr.append(value % 60)
-        resStr.append(",")
-        resStr.append(" ")
-    }
-    resStr.delete(resStr.lastIndex - 1, resStr.lastIndex + 1)
-    return resStr.toString()
 }

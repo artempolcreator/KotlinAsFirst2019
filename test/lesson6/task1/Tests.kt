@@ -114,7 +114,7 @@ class Tests {
     @Test
     @Tag("Hard")
     fun mostExpensive() {
-        assertEquals("Any good with price 0.0", mostExpensive("В 0"))
+        assertEquals("В", mostExpensive("В 0"))
         assertEquals("", mostExpensive(""))
         assertEquals("Курица", mostExpensive("Хлеб 39.9; Молоко 62.5; Курица 184.0; Конфеты 89.9"))
         assertEquals("Вино", mostExpensive("Вино 255.0"))
@@ -155,20 +155,9 @@ class Tests {
             computeDeviceCells(11, "<<<<< + >>>>>>>>>> --[<-] >+[>+] >++[--< <[<] >+[>+] >++]", 256)
         )
     }
-
-    @Test
-    fun resOfZabeg() {
-        assertEquals(
-            "Николаев 10:00, Михайлов 12:51, Фомин 12:59, Анфисов 13:00",
-            resOfZabeg("Николаев     10:00,   Фомин 12:59, Анфисов 13:00,       Михайлов 12:51")
-        )
-        assertEquals(
-            "Николаев 12:48, Михайлов 12:51, Фомин 12:59, Анфисов 13:13",
-            resOfZabeg("Михайлов 12:51, Фомин 12:59, Николаев 12:48, Анфисов 13:13")
-        )
-        assertEquals(
-            "Николаев 10:00, Михайлов 12:51, Фомин 12:59, Анфисов 13:00",
-            resOfZabeg("Николаев 10:00, Михайлов 12:51, Фомин 12:59, Анфисов 13:00")
-        )
-    }
 }
+
+
+
+
+
