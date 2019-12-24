@@ -80,7 +80,7 @@ data class Circle(val center: Point, val radius: Double) {
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
     fun distance(other: Circle): Double {
-        val ctrDist = sqrt(sqr(center.x - other.center.x) + sqr(center.y - other.center.y))
+        val ctrDist = center.distance(other.center)
         if (ctrDist <= radius + other.radius) return 0.0
         return ctrDist - (radius + other.radius)
     }
@@ -110,7 +110,18 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment = TODO()
+fun diameter(vararg points: Point): Segment {
+    require(points.size > 1)
+    var resPair = Pair(-1, -1)
+    var result = Segment(points[0], points[1])
+    for (i in 0 until points.size - 1) {
+        for (j in i + 1 until points.size) {
+            if (points[i].distance(points[j]) >= result.begin.distance(result.end))
+                result = Segment(points[i], points[j])
+        }
+    }
+    return result
+}
 
 /**
  * Простая
@@ -118,7 +129,11 @@ fun diameter(vararg points: Point): Segment = TODO()
  * Построить окружность по её диаметру, заданному двумя точками
  * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
  */
-fun circleByDiameter(diameter: Segment): Circle = TODO()
+fun circleByDiameter(diameter: Segment): Circle {
+    val cntr = Point((diameter.begin.x + diameter.end.x) / 2, (diameter.begin.y + diameter.end.y) / 2)
+    val radius = diameter.end.distance(diameter.begin) / 2
+    return Circle(cntr, radius)
+}
 
 /**
  * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
